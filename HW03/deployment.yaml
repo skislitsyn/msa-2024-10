@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hw03-deployment
+  labels:
+    app: hw03
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hw03
+  template:
+    metadata:
+      labels:
+        app: hw03
+    spec:
+      containers:
+      - name: msa-2024-10-hw02
+        image: sakislitsyn/msa-2024-10-hw02
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health/
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
